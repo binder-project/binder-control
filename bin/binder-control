@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 var _ = require('lodash')
+var path = require('path')
 var program = require('commander')
-var BuildServer = require('binder-build')
-var KubernetesServer = require('binder-deploy-kubernetes')
+var shell = require('shelljs')
+var util = require('../lib/util.js')
 
 // TODO: better backend management
 var backends = {
@@ -16,20 +17,16 @@ program
   .version('0.0.1')
 
 program
-  .command('start-build')
-  .description('Start the build server')
-  .alias('build')
-  .option('-r, --registry [registry]', 'Docker registry to push images to (will be prepended to name)')
-  .option('-d, --directory [dir]', 'Directory for storing built apps')
-  .option('-a, --apiKey [key]', 'API key for authorizing administrative requests')
-  .action(function (options) {
-    var registry = options.registry
-    var BuildServer = require('binder-build')
-    var opts = {
-      registry: registry
-    }
-    var server = new BuildServer(opts)
-    server.start()
+  .command('build', 'Manage the build server')
+  .command('registry', 'Manage the registry server')
+  .command('deploy', 'Manage all deployment backends')
+
+program
+  .command('status')
+  .description('Show information about all running Binder servers')
+  .action(function () {
+    console.log('Running Binder servers:')
+    shell.exec('pm2 list')
   })
 
 program
