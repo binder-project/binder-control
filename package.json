@@ -1,0 +1,31 @@
+{
+  "name": "binder-control",
+  "version": "0.0.1",
+  "description": "CLI for launching and managing binder server processes",
+  "main": "bin/binder-control",
+  "bin": {
+    "binder-control": "bin/binder-control"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binder-project/binder-control.git"
+  },
+  "keywords": [
+    "binder",
+    "control"
+  ],
+  "author": "Andrew Osheroff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/binder-project/binder-control/issues"
+  },
+  "homepage": "https://github.com/binder-project/binder-control#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "lodash": "^3.10.1",
+    "pm2": "^1.0.0"
+  }
+}

@@ -18,6 +18,16 @@ program
       args: process.argv.slice(2)
     })
   })
+  .on('--help', function () {
+    shell.exec('pm2 flush')
+    util.startWithPM2({
+      name: 'binder-build',
+      script: path.join(__dirname, 'apps', 'build.js'),
+      args: ['--help'],
+    })
+    var help = shell.exec('pm2 logs binder-build --lines=500', { async: true })
+    help.kill()
+  })
 
 program
   .command('stop')
