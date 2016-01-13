@@ -30,15 +30,6 @@ program
   })
 
 program
-  .command('start-registry')
-  .description('Start the registry server')
-  .alias('registry')
-  .option('-a, --apiKey [key]', 'API key for authorizing administrative requests')
-  .action(function (options) {
-    console.log('Starting registry...')
-  })
-
-program
   .command('start-deploy <backend>')
   .description('Start a deploy backend server')
   .alias('deploy')
