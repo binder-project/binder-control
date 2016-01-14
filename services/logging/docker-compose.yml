@@ -1,0 +1,26 @@
+binder-elasticsearch:
+  image: elasticsearch
+  ports:
+    - $ELASTICSEARCH_PORT:9200
+  volumes:
+    - $ELASTICSEARCH_DIR:/usr/share/elasticsearch/data
+
+binder-kibana:
+  image: kibana
+  ports:
+    - $KIBANA_PORT:5601
+  environment:
+    - ELASTICSEARCH_URL=http://binder-elasticsearch:9200
+  links:
+    - binder-elasticsearch
+
+binder-logstash:
+  image: andrewosh/logstash-binder
+  ports:
+    - $LOGSTASH_PORT:9100
+  environment:
+    - ELASTICSEARCH_URL=http://binder-elasticsearch:9200
+  volumes:
+    - $LOGSTASH_CONFIG_DIR:/usr/share/logstash/config
+  links:
+    - binder-elasticsearch

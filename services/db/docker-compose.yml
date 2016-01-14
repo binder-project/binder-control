@@ -1,0 +1,3 @@
+binder-mongo:
+    image: mongo
+

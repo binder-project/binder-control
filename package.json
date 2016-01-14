@@ -25,7 +25,10 @@
   "homepage": "https://github.com/binder-project/binder-control#readme",
   "dependencies": {
     "commander": "^2.9.0",
+    "js-yaml": "^3.5.2",
     "lodash": "^3.10.1",
-    "pm2": "^1.0.0"
+    "pm2": "^1.0.0",
+    "shelljs": "^0.5.3",
+    "string-format": "^0.5.0"
   }
 }
