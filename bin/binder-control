@@ -26,16 +26,27 @@ program
   .command('deploy', 'Manage all deployment backends')
 
 program
-  .command('build-images', 'Build all Binder images required during the boostrapping process')
+  .command('build-images')
+  .description('Build all Binder images required during the boostrapping process')
   .action(function () {
     services.buildImages()
   })
 
 program
-  .command('init', 'Start binder-db and binder-logging services')
-  .action(function () {
-    services.buildImages()
-    services.startServices()
+  .command('init')
+  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
+  .description('Start binder-db and binder-logging services')
+  .action(function (options) {
+    var configFile = options.config || path.join(__dirname, '../conf/example.json')
+    fs.readFile(configFile, function (err, contents) {
+      if (err) {
+        console.error('could not read config file: {0}'.format(err))
+        process.exit(1)
+      }
+      var initConfig = JSON.parse(contents)
+      services.buildImages()
+      services.startServices(initConfig)
+    })
   })
 
 program

@@ -17,6 +17,11 @@ program
       name: 'binder-build', 
       script: path.join(__dirname, 'apps', 'build.js'),
       args: process.argv.slice(2)
+    }, function (err) {
+      if (err) {
+        console.error(err)
+        process.exit(1)
+      }
     })
   })
   .on('--help', function () {
@@ -25,6 +30,11 @@ program
       name: 'binder-build',
       script: path.join(__dirname, 'apps', 'build.js'),
       args: ['--help'],
+    }, function (err) {
+      if (err) {
+        console.error(err)
+        process.exit(1)
+      }
     })
     var help = shell.exec('pm2 logs binder-build --lines=500', { async: true })
     help.kill()

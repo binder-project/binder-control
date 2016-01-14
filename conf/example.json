@@ -1,9 +1,9 @@
 {
   "logging": {
-    "host": "localhost"
+    "host": "localhost",
     "logstash": {
       "port": 8050,
-      "dir": "/var/log/binder"
+      "configDir": "~/binder-control/services/logging/logstash/"
     },
     "elasticsearch": {
       "port": 8052,
@@ -12,7 +12,7 @@
     "kibana": {
       "port": 8053
     }
-  }
+  },
 
   "db": {
     "host": "localhost",

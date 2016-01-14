@@ -15,7 +15,7 @@ binder-kibana:
     - binder-elasticsearch
 
 binder-logstash:
-  image: andrewosh/logstash-binder
+  image: binder-logstash
   ports:
     - $LOGSTASH_PORT:9100
   environment:

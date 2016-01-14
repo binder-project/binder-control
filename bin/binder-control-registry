@@ -14,9 +14,14 @@ program
   .action(function () {
     console.log('Starting the registry server...')
     util.startWithPM2({
-      name: 'binder-registry', 
+      name: 'binder-registry',
       script: path.join(__dirname, 'apps', 'registry.js'),
       args: process.argv.slice(2)
+    }, function (err) {
+      if (err) {
+        console.error(err)
+        process.exit(1)
+      }
     })
   })
   .on('--help', function () {
@@ -24,7 +29,12 @@ program
     util.startWithPM2({
       name: 'binder-registry',
       script: path.join(__dirname, 'apps', 'registry.js'),
-      args: ['--help'],
+      args: ['--help']
+    }, function (err) {
+      if (err) {
+        console.error(err)
+        process.exit(1)
+      }
     })
     var help = shell.exec('pm2 logs binder-registry --lines=500', { async: true })
     help.kill()
