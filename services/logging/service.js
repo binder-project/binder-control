@@ -21,7 +21,7 @@ var validateConfig = function (config) {
 /**
  * Start the logging service (running the ELK stack)
  * @param {object} config - configuration options
- * @param {function} cb - cb(err, status)
+ * @param {function} cb - cb(err)
  */
 var start = function (config, cb) {
   var invalid = validateConfig(config)
@@ -35,22 +35,24 @@ var start = function (config, cb) {
     'LOGSTASH_PORT': 'logging.logstash.port',
     'LOGSTASH_CONFIG_DIR': 'logging.logstash.configDir'
   }
-  var env = ''
   _.forEach(_.keys(confToVars), function (envVar) {
     var value = _.get(config, confToVars[envVar])
     if (!value) {
       return cb(new Error('malformed configuration file: {} not specified'.format(envVar)))
     }
-    env += '{0}={1} '.format(envVar, _.get(config, confToVars[envVar]))
+    confToVars[envVar] = value
   })
   var dcPath = path.join(__dirname, '../../services', 'logging', 'docker-compose.yml')
   util.startWithPM2({
     name: 'binder-logging-service',
-    script: '{0} docker-compose'.format(env),
-    args: ['-f', '{0}'.format(dcPath), 'up'],
-    exec_interpreter: 'bash'
+    env: confToVars,
+    script: shell.which('docker-compose'),
+    args: ['-f', dcPath, 'up'],
+    exec_interpreter: 'none'
   }, function (err) {
-    console.error('error starting logging service: ' + err.msg)
+    if (err) {
+      console.error('error starting logging service: ' + err.msg)
+    }
     return cb(err)
   })
 }

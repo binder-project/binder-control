@@ -51,7 +51,7 @@ program
 
 program
   .command('status')
-  .description('Show information about all running Binder servers')
+  .description('Show information about all running Binder servers/services')
   .action(function () {
     console.log('Running Binder servers:')
     shell.exec('pm2 list')
@@ -90,6 +90,13 @@ program
   .alias('all')
   .option('-f, --config-file [conf]', 'Launch all servers using their default config files')
   .action(function (options) {
+  })
+
+program
+  .command('stop-all')
+  .description('Stop all Binder servers/services')
+  .action(function () {
+    shell.exec('pm2 delete all')
   })
 
 program.parse(process.argv)
