@@ -14,6 +14,10 @@
 
     "kibana": {
       "port": 8053
+    },
+
+    "streaming": {
+      "port": 2121
     }
   },
 

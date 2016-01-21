@@ -18,6 +18,7 @@ binder-logstash:
   image: binder-logstash
   ports:
     - $LOGSTASH_PORT:9100
+    - $WEBSOCKET_PORT:2121
   environment:
     - ELASTICSEARCH_URL=http://binder-elasticsearch:9200
   volumes:
