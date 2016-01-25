@@ -1,0 +1,3 @@
+[submodule "images/binder-logstash/logstash-output-websocket-topics"]
+	path = images/binder-logstash/logstash-output-websocket-topics
+	url = git@github.com:andrewosh/logstash-output-websocket-topics
