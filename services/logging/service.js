@@ -90,7 +90,12 @@ var start = function (config, cb) {
       if (err) return next(err)
       // we need to be able to do exact string search on the app name
       var mappings = json.body['binder-logs']
-      mappings.mappings.logs.properties.app['index'] = 'not_analyzed'
+      var indexPath = 'mappings.logs.properties.app.index'
+      // do not recreate the index unless necessary (only the first time Binder is initialized)
+      if (_.get(mappings, indexPath) === 'not_analyzed') {
+        return next(null)
+      }
+      _.set(mappings, indexPath, 'not_analyzed')
       request({
         url: indexUrl,
         method: 'DELETE'
