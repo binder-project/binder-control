@@ -9,21 +9,28 @@ format.extend(String.prototype)
 
 var services = require('../lib/services.js')
 
+var binderBuild = require('binder-build')
+var binderRegistry = require('binder-registry')
+
 // TODO: better backend management
 var backends = {
-  kubernetes: {
-    start: function (opts) {
-    }
-  }
+  kubernetes: require('binder-deploy-kubernetes')
 }
 
 program
   .version('0.0.1')
 
 program
-  .command('build', 'Manage the build server')
-  .command('registry', 'Manage the registry server')
-  .command('deploy', 'Manage all deployment backends')
+  .command('build')
+binderBuild.cli.pm2CLI(program)
+
+program
+  .command('registry')
+binderRegistry.cli.pm2CLI(program)
+
+program
+  .command('deploy-kubernetes')
+backends.kubernetes.cli.pm2CLI(program)
 
 program
   .command('build-images')
@@ -58,23 +65,6 @@ program
   })
 
 program
-  .command('start-deploy <backend>')
-  .description('Start a deploy backend server')
-  .alias('deploy')
-  .option('-a, --apiKey [key]', 'API key for authorizing administrative requests')
-  .action(function (backend, options) {
-    var supportedBackends = _.keys(backends)
-    if (backend in supportedBackends) {
-      var startFunc = backends[backend].start
-      startFunc(options)
-    } else {
-      console.error('backend ' + backend + ' not supported!')
-      process.exit(1)
-    }
-    console.log('Starting deploy with backend: ' + backend)
-  })
-
-program
   .command('list-backends')
   .alias('backends')
   .description('List all available deployment backends')
@@ -90,6 +80,7 @@ program
   .alias('all')
   .option('-f, --config-file [conf]', 'Launch all servers using their default config files')
   .action(function (options) {
+    console.error('start-all is not yet implemented')
   })
 
 program
