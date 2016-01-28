@@ -5,7 +5,7 @@ var shell = require('shelljs')
 var format = require('string-format')
 format.extend(String.prototype)
 
-var util = require('../../lib/util.js')
+var utils = require('binder-utils')
 
 // TODO: move to util file
 var validateConfig = function (config) {
@@ -40,7 +40,7 @@ var start = function (config, cb) {
     confToVars[envVar] = value
   })
   var dcPath = path.join(__dirname, '../../services', 'db', 'docker-compose.yml')
-  util.startWithPM2({
+  utils.startWithPM2({
     name: 'binder-db-service',
     env: confToVars,
     script: shell.which('docker-compose'),

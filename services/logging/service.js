@@ -9,7 +9,7 @@ var format = require('string-format')
 format.extend(String.prototype)
 
 var getLogger = require('binder-logging').getLogger
-var util = require('../../lib/util.js')
+var utils = require('binder-utils')
 
 // TODO: move to util file
 var validateConfig = function (config) {
@@ -50,7 +50,7 @@ var start = function (config, cb) {
 
   var dcPath = path.join(__dirname, '../../services', 'logging', 'docker-compose.yml')
   var startContainers = function (next) {
-    util.startWithPM2({
+    utils.startWithPM2({
       name: 'binder-logging-service',
       env: confToVars,
       script: shell.which('docker-compose'),
@@ -118,7 +118,6 @@ var start = function (config, cb) {
     logFirstMessage,
     configureElasticsearch
   ], function (err) {
-    console.log('STARTED: logging service')
     return cb(err)
   })
 }

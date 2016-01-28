@@ -2,9 +2,9 @@
   "name": "binder-control",
   "version": "0.0.1",
   "description": "CLI for launching and managing binder server processes",
-  "main": "index.js",
+  "main": "bin/binder-control",
   "bin": {
-    "binder-control": "index.js"
+    "binder-control": "bin/binder-control"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

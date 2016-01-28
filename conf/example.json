@@ -27,18 +27,24 @@
     "dir": "/data/binder/db"
   },
 
+  "kubernetes": {
+    "port": 9051
+  },
+
   "binder-build": {
+    "port": 8082
 
   },
 
   "binder-registry": {
-
+    "port": 8083
   },
 
   "binder-deploy-kubernetes": {
+    "port": 8084,
     "kube": {
       "proxyHost": "localhost",
-      "proxyPort": 8083,
+      "proxyPort": 8085,
       "apiVersion": "v1"
     },
     "pool": {
@@ -47,7 +53,7 @@
     },
     "registry": {
       "host": "localhost",
-      "port": 8084
+      "port": 8083
     },
     "test": {
       "templateDir": "examples/",

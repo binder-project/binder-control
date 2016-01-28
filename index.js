@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var _ = require('lodash')
+var async = require('async')
 var path = require('path')
 var fs = require('fs')
 var program = require('commander')
@@ -9,28 +10,13 @@ format.extend(String.prototype)
 
 var services = require('../lib/services.js')
 
-var binderBuild = require('binder-build')
-var binderRegistry = require('binder-registry')
-
-// TODO: better backend management
-var backends = {
-  kubernetes: require('binder-deploy-kubernetes')
-}
-
 program
   .version('0.0.1')
 
 program
   .command('build')
-binderBuild.cli.pm2CLI(program)
-
-program
   .command('registry')
-binderRegistry.cli.pm2CLI(program)
-
-program
   .command('deploy-kubernetes')
-backends.kubernetes.cli.pm2CLI(program)
 
 program
   .command('build-images')
@@ -44,15 +30,28 @@ program
   .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
   .description('Start binder-db and binder-logging services')
   .action(function (options) {
-    var configFile = options.config || path.join(__dirname, '../conf/example.json')
+    var configFile = options.config || path.join(__dirname, 'conf/example.json')
     fs.readFile(configFile, function (err, contents) {
       if (err) {
         console.error('could not read config file: {0}'.format(err))
-        process.exit(1)
+        process.exit(2)
       }
       var initConfig = JSON.parse(contents)
-      services.buildImages()
-      services.startServices(initConfig)
+      services.buildImages(function (err) {
+        console.log('err: ' + err)
+        if (err) {
+          console.error(err)
+          return
+        }
+        services.startServices(initConfig, function (err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          console.log('Finished building images and starting services.')
+          return
+        })
+      })
     })
   })
 
