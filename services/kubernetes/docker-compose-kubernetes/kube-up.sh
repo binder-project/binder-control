@@ -1,6 +1,4 @@
 #!/bin/bash
-echo "In kube-up!"
-
 set -e
 
 require_command_exists() {
