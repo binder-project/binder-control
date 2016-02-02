@@ -28,7 +28,8 @@
   },
 
   "kubernetes": {
-    "port": 9051
+    "port": 9051,
+    "proxyPort": 8085
   },
 
   "binder-build": {

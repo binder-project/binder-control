@@ -26,9 +26,9 @@ program
   })
 
 program
-  .command('init')
+  .command('init-services')
   .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
-  .description('Start binder-db and binder-logging services')
+  .description('Start binder-db, binder-logging, and binder-kubernetes services')
   .action(function (options) {
     var configFile = options.config || path.join(__dirname, '../conf/example.json')
     fs.readFile(configFile, function (err, contents) {
@@ -46,6 +46,29 @@ program
           process.exit(2)
         }
         console.log('Started services successfully')
+        process.exit(1)
+      })
+    })
+  })
+
+program
+  .command('stop-services')
+  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
+  .description('Stop all utility services (binder-db, binder-logging and binder-kubernetes)')
+  .action(function (options) {
+    var configFile = options.config || path.join(__dirname, '../conf/example.json')
+    fs.readFile(configFile, function (err, contents) {
+      if (err) {
+        console.error('could not read config file: {0}'.format(err))
+        process.exit(2)
+      }
+      var initConfig = JSON.parse(contents)
+      services.stopServices(initConfig, function (err) {
+        if (err) {
+          console.error('Failed to stop services: {0}'.format(err))
+          process.exit(2)
+        }
+        console.log('Stopped services successfully')
         process.exit(1)
       })
     })

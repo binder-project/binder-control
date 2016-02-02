@@ -60,11 +60,11 @@ var start = function (config, cb) {
       if (err) {
         console.error('error starting logging service: ' + err.msg)
       }
-      // give the containers 20s to start up
+      // give the containers 30s to start up
       console.log('Waiting for logging containers to start up...')
       setTimeout(function () {
         return next(err)
-      }, 20000)
+      }, 30000)
     })
   }
 
@@ -122,4 +122,6 @@ var start = function (config, cb) {
   })
 }
 
-module.exports = start
+module.exports = {
+  start: start
+}

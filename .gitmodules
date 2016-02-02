@@ -1,3 +1,6 @@
 [submodule "images/binder-logstash/logstash-output-websocket-topics"]
 	path = images/binder-logstash/logstash-output-websocket-topics
 	url = git@github.com:andrewosh/logstash-output-websocket-topics
+[submodule "services/kubernetes/coreos-kubernetes"]
+	path = services/kubernetes/coreos-kubernetes
+	url = https://github.com/coreos/coreos-kubernetes.git

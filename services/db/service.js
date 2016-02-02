@@ -54,4 +54,6 @@ var start = function (config, cb) {
   })
 }
 
-module.exports = start
+module.exports = {
+  start: start
+}

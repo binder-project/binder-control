@@ -1,12 +1,7 @@
 var path = require('path')
 
 var _ = require('lodash')
-var async = require('async')
-var urljoin = require('url-join')
-var request = require('request')
 var shell = require('shelljs')
-var format = require('string-format')
-format.extend(String.prototype)
 
 var utils = require('binder-utils')
 
@@ -22,7 +17,7 @@ var validateConfig = function (config) {
 }
 
 /**
- * Start the logging service (running the ELK stack)
+ * Start the Kubernetes service (running inside a VirtualBox VM)
  * @param {object} config - configuration options
  * @param {function} cb - cb(err)
  */
@@ -32,7 +27,8 @@ var start = function (config, cb) {
     return cb(invalid)
   }
   var confToVars = {
-    'API_SERVER_PORT': 'kubernetes.port'
+    'API_SERVER_PORT': 'kubernetes.port',
+    'KUBE_PROXY_PORT': 'kubernetes.proxyPort'
   }
   _.forEach(_.keys(confToVars), function (envVar) {
     var value = _.get(config, confToVars[envVar])
@@ -55,4 +51,16 @@ var start = function (config, cb) {
   })
 }
 
-module.exports = start
+/**
+ * Stop the Kubernetes VM
+ */
+var stop = function (config, cb) {
+  shell.exec(path.join(__dirname, 'stop-kubernetes.sh'), function (err) {
+    return cb(err)
+  })
+}
+
+module.exports = {
+  start: start,
+  stop: stop
+}
