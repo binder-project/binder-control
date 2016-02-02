@@ -55,7 +55,9 @@ var start = function (config, cb) {
  * Stop the Kubernetes VM
  */
 var stop = function (config, cb) {
-  shell.exec(path.join(__dirname, 'stop-kubernetes.sh'), function (err) {
+  var cmd = 'stop-kubernetes.sh'
+  shell.env['SERVICE_DIR'] = __dirname
+  shell.exec(path.join(__dirname, cmd), function (err) {
     return cb(err)
   })
 }

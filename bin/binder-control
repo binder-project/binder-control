@@ -57,20 +57,22 @@ program
   .description('Stop all utility services (binder-db, binder-logging and binder-kubernetes)')
   .action(function (options) {
     var configFile = options.config || path.join(__dirname, '../conf/example.json')
-    fs.readFile(configFile, function (err, contents) {
+    var stopPM2 = function (next) {
+      shell.exec('pm2 delete all', function (err) {
+        return next(err)
+      })
+    }
+    async.waterfall([
+      _.partial(fs.readFile, configFile),
+      services.stopServices,
+      stopPM2
+    ], function (err) {
       if (err) {
-        console.error('could not read config file: {0}'.format(err))
+        console.error('Failed to stop services: {0}'.format(err))
         process.exit(2)
       }
-      var initConfig = JSON.parse(contents)
-      services.stopServices(initConfig, function (err) {
-        if (err) {
-          console.error('Failed to stop services: {0}'.format(err))
-          process.exit(2)
-        }
-        console.log('Stopped services successfully')
-        process.exit(1)
-      })
+      console.log('Stopped services successfully')
+      process.exit(0)
     })
   })
 
