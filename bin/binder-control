@@ -10,6 +10,13 @@ format.extend(String.prototype)
 
 var services = require('../lib/services.js')
 
+var parseConfig = function (path, cb) {
+  fs.readFile(path, function (err, contents) {
+    if (err) return cb(err)
+    return cb(null, JSON.parse(contents))
+  })
+}
+
 program
   .version('0.0.1')
 
@@ -26,28 +33,67 @@ program
   })
 
 program
-  .command('init-services')
+  .command('start-service [name]')
+  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
+  .description('Start a single Binder service (db, logging, or kubernetes)')
+  .action(function (name, options) {
+    console.log('name is: {0}'.format(name))
+    var configFile = options.config || path.join(__dirname, '../conf/example.json')
+    async.waterfall([
+      _.partial(parseConfig, configFile),
+      _.partial(services.startService, name)
+    ], function (err) {
+      if (err) {
+        console.error('Failed to start service {0}: {1}'.format(name, err))
+        process.exit(2)
+      }
+      console.log('Started service {0} successfully'.format(name))
+      process.exit(1)
+    })
+  })
+
+program
+  .command('stop-service [name]')
+  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
+  .description('Stop a single Binder service (db, logging, or kubernetes)')
+  .action(function (name, options) {
+    var configFile = options.config || path.join(__dirname, '../conf/example.json')
+    var stopPM2 = function (next) {
+      shell.exec('pm2 delete binder-{0}-service'.format(name), function (err) {
+        return next(err)
+      })
+    }
+    async.waterfall([
+      _.partial(parseConfig, configFile),
+      _.partial(services.stopService, name),
+      stopPM2
+    ], function (err) {
+      if (err) {
+        console.error('Failed to stop service {0}: {1}'.format(name, err))
+        process.exit(2)
+      }
+      console.log('Stopped service {0} successfully'.format(name))
+      process.exit(1)
+    })
+  })
+
+program
+  .command('start-services')
   .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
   .description('Start binder-db, binder-logging, and binder-kubernetes services')
   .action(function (options) {
     var configFile = options.config || path.join(__dirname, '../conf/example.json')
-    fs.readFile(configFile, function (err, contents) {
+    async.waterfall([
+      services.buildImages,
+      _.partial(parseConfig, configFile),
+      _.partial(services.startServices)
+    ], function (err) {
       if (err) {
-        console.error('could not read config file: {0}'.format(err))
+        console.error('Failed to start services: {0}'.format(err))
         process.exit(2)
       }
-      var initConfig = JSON.parse(contents)
-      async.series([
-        services.buildImages,
-        _.partial(services.startServices, initConfig)
-      ], function (err) {
-        if (err) {
-          console.error('Failed to start services: {0}'.format(err))
-          process.exit(2)
-        }
-        console.log('Started services successfully')
-        process.exit(1)
-      })
+      console.log('Started services successfully')
+      process.exit(1)
     })
   })
 
@@ -63,7 +109,7 @@ program
       })
     }
     async.waterfall([
-      _.partial(fs.readFile, configFile),
+      _.partial(parseConfig, configFile),
       services.stopServices,
       stopPM2
     ], function (err) {
