@@ -27,7 +27,7 @@ program
 
 program
   .command('build-images')
-  .description('Build all Binder images required during the boostrapping process')
+  .description('Build all Docker images required during the boostrapping process')
   .action(function () {
     services.buildImages()
   })
