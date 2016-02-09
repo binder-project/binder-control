@@ -1,13 +1,12 @@
 #!/bin/bash
-if [ ! -d $SERVICE_PATH/kubernetes/ ] 
+if [ ! -d $SERVICE_DIR/kubernetes/ ] 
 then
-  cd $SERVICE_PATH
+  cd $SERVICE_DIR
   curl -L https://github.com/kubernetes/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz > kubernetes.tar.gz
   tar xvf kubernetes.tar.gz
-  cd kubernetes/cluster/vagrant
 fi
-cp $SERVICE_PATH/scripts/* $SERVICE_PATH/kubernetes/cluster/vagrant/
-cd $SERVICE_PATH/kubernetes/cluster 
-KUBERNETES_PROVIDER=vagrant ./kube-up.sh
-PATH=$PATH:$SERVICE_PATH/bin kubectl proxy --port=$KUBE_PROXY_PORT
+cp $SERVICE_DIR/scripts/* $SERVICE_DIR/kubernetes/cluster/vagrant/
+export KUBERNETES_PROVIDER=vagrant 
+$SERVICE_DIR/kubernetes/cluster/kube-up.sh
+PATH=$PATH:$SERVICE_DIR/bin kubectl proxy --port=$KUBE_PROXY_PORT
 
