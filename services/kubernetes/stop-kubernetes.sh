@@ -1,2 +1,2 @@
 #!/bin/bash
-KUBERNETES_PROVIDER=vagrant $SERVICE_DIR/kubernetes/cluster/kube-down.sh
+cd $SERVICE_DIR/coreos-kubernetes/single-node && vagrant --provider=virtualbox destroy -f

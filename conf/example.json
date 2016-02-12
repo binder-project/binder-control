@@ -33,17 +33,19 @@
   },
 
   "binder-build": {
+    "host": "localhost",
     "port": 8082
-
   },
 
   "binder-registry": {
+    "host": "localhost",
     "port": 8083
   },
 
   "binder-deploy-kubernetes": {
     "port": 8084,
     "kube": {
+      "provider": "vagrant",
       "proxyHost": "localhost",
       "proxyPort": 8085,
       "apiVersion": "v1"
