@@ -32,7 +32,15 @@
     "proxyPort": 8085
   },
 
-  "binder-build": {
+ "binder-build": {
+    "docker": {
+      "enabled": true,
+      "user": "N/A",
+      "password": "N/A",
+      "email": "N/A"
+      "registry": "",
+      "host": "localhost"
+    },
     "host": "localhost",
     "port": 8082
   },
