@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+var program = require('commander')
+
+require('binder-deploy-kubernetes').cli.pm2CLI(program)
+program.parse(process.argv)
