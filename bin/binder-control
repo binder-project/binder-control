@@ -23,7 +23,6 @@ program
 
 program
   .command('build', 'Manager the build server')
-  .command('registry', 'Manage the registry server')
   .command('deploy-kubernetes', 'Manage the Kubernetes deployment backend')
 
 program

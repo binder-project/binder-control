@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-var program = require('commander')
-
-require('binder-registry').cli.pm2CLI(program)
-program.parse(process.argv)
