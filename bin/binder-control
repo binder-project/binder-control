@@ -24,6 +24,7 @@ program
 program
   .command('build', 'Manager the build server')
   .command('deploy-kubernetes', 'Manage the Kubernetes deployment backend')
+  .command('web', 'Manage the web server')
 
 program
   .command('build-images')

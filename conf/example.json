@@ -45,11 +45,6 @@
     "port": 8082
   },
 
-  "binder-registry": {
-    "host": "localhost",
-    "port": 8083
-  },
-
   "binder-deploy-kubernetes": {
     "port": 8084,
     "kube": {
@@ -64,12 +59,28 @@
     },
     "registry": {
       "host": "localhost",
-      "port": 8083
+      "port": 8082
     },
     "test": {
       "templateDir": "examples/",
       "testing": false
     }
-  }
+  },
 
+  "binder-web": {
+    "port": 2999,
+    "build": {
+      "host": "localhost",
+      "port": 8082
+    },
+    "registry": {
+      "host": "localhost",
+      "port": 8082
+    },
+    "deploy": {
+      "host": "localhost",
+      "port": 8084
+    }
+  }
 }
+
