@@ -44,13 +44,11 @@ the `binder-web` interface -- it should only be used for testing `binder-deploy-
 development.
 
 ### prerequisites
-
-First and foremost, install PM2:
-`npm install pm2 -g`
-
-All background services depend on Docker + Docker Compose
-
-In addition, the Kubernetes testing VM requires VirtualBox + Vagrant
+ 1. _PM2_: `npm install pm2 -g`
+ 2. (optional, for background services only) _Docker_: https://docs.docker.com/linux/step_one/
+ 3. (optional, for background services only) _Docker Compose_: https://docs.docker.com/engine/installation/linux/ubuntulinux/
+ 4. (optional, for Kubernetes service only) _Vagrant_: https://www.vagrantup.com/downloads.html
+ 5. (optional, for Kubernetes service only) _VirtualBox_: https://www.virtualbox.org/wiki/Downloads
 
 ### install
 `binder-control` is designed to be installed globally and used from the command line.
