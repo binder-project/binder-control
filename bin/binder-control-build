@@ -2,4 +2,5 @@
 var program = require('commander')
 
 require('binder-build').cli.pm2CLI(program)
+if (process.argv.length === 2) program.help()
 program.parse(process.argv)

@@ -15,7 +15,7 @@ binder-kibana:
     - binder-elasticsearch
 
 binder-logstash:
-  image: binder-logstash
+  image: andrewosh/binder-logstash
   ports:
     - $LOGSTASH_PORT:9100
     - $WEBSOCKET_PORT:2121

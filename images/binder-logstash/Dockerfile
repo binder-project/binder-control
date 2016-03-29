@@ -15,8 +15,6 @@ RUN chown -R logstash:logstash /usr/share/logstash/config
 
 USER logstash
 
-RUN echo "blablaahd"
-
 RUN /opt/logstash/bin/plugin install logstash-input-tcp
 RUN /opt/logstash/bin/plugin install logstash-output-elasticsearch
 RUN /opt/logstash/bin/plugin install logstash-output-websocket_topics

@@ -34,6 +34,18 @@ program
   })
 
 program
+  .command('start-all')
+  .description('Start the build, registry, and deploy-kubernetes servers with defaults')
+  .action(function () {
+    var key = hat()
+    var config = path.join(__dirname, '../conf/example.json')
+    shell.exec('binder-control build start --api-key {0} --config {1}'
+                .format(key, config))
+    shell.exec('binder-control deploy-kubernetes start --api-key {0} --config {1}'
+                .format(key, config))
+  })
+
+program
   .command('start-service [name]')
   .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
   .description('Start a single Binder service (db, logging, or kubernetes)')
