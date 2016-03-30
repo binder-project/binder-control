@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+var program = require('commander')
+program.parse(process.argv)
+
+var path = require('path')
+var hat = require('hat')
+var prompt = require('prompt')
+var shell = require('shelljs')
+var spawn = require('child_process').spawnSync
+var format = require('string-format')
+format.extend(String.prototype)
+
+prompt.start()
+
+prompt.get({
+  properties: {
+    'kube-cluster': {
+      description: 'Would you like to launch a Kubernetes cluster?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'kube-vm': {
+      description: 'Would you like to launch a Kubernetes VM (local testing only)?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'db': {
+      description: 'Would you like to launch the database service?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'logging': {
+      description: 'Would you like to launch the logging service?',
+      type: 'boolean',
+      default: 'false',
+    }
+  }
+}, function (err, result) {
+  var key = hat()
+
+  // first, optionally start all background services
+  if (result['kube-cluster']) {
+    spawn('binder-control', ['start-service', 'kube-cluster'], { stdio: 'inherit' })
+  }
+  if (result['kube-vm']) {
+    spawn('binder-control', ['start-service', 'kube-vm'], { stdio: 'inherit' })
+  }
+  if (result.db) {
+    spawn('binder-control', ['start-service', 'db'], { stdio: 'inherit' })
+  }
+  if (result.logging) {
+    spawn('binder-control', ['start-service', 'logging'], { stdio: 'inherit' })
+  }
+
+  // next, launch all servers
+  var config = path.join(__dirname, '../conf/example.json')
+  spawn('binder-control', ['build',  'start',  '--api-key={0}'.format(key), ' --config={0}'.format(config)],
+        { stdio: 'inherit' })
+  spawn('binder-control', ['deploy-kubernetes',  'start',
+        '--api-key={0}'.format(key), '--config={0}'.format(config)],
+        { stdio: 'inherit' })
+  spawn('binder-control', ['web',  'start', '--api-key={0}'.format(key), '--config={0}'.format(config)],
+        { stdio: 'inherit' })
+  console.log('Started services/servers with API key:', key)
+})
+
+
+

@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+var program = require('commander')
+program.parse(process.argv)
+
+var path = require('path')
+var hat = require('hat')
+var prompt = require('prompt')
+var shell = require('shelljs')
+var format = require('string-format')
+format.extend(String.prototype)
+
+prompt.start()
+
+prompt.get({
+  properties: {
+    'kube-cluster': {
+      description: 'Would you like to stop the Kubernetes cluster?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'kube-vm': {
+      description: 'Would you like to stop the Kubernetes VM (local testing only)?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'db': {
+      description: 'Would you like to stop the database service?',
+      type: 'boolean',
+      default: 'false',
+    },
+    'logging': {
+      description: 'Would you like to stop the logging service?',
+      type: 'boolean',
+      default: 'false',
+    }
+  }
+}, function (err, result) {
+  var key = hat()
+
+  // first, optionally start all background services
+  if (result['kube-cluster']) {
+    shell.exec('binder-control stop-service kube-cluster')
+  }
+  if (result['kube-vm']) {
+    shell.exec('binder-control stop-service kube-vm')
+  }
+  if (result.db) {
+    shell.exec('binder-control stop-service db')
+  }
+  if (result.logging) {
+    shell.exec('binder-control stop-service logging')
+  }
+
+  // next, launch all servers
+  var config = path.join(__dirname, '../conf/example.json')
+  shell.exec('binder-control build stop')
+  shell.exec('binder-control deploy-kubernetes stop')
+  shell.exec('binder-control web stop')
+  console.log('Stopped services/servers')
+})
+
+
+

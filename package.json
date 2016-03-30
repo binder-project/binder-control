@@ -1,6 +1,6 @@
 {
   "name": "binder-control",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI for launching and managing binder server processes",
   "main": "bin/binder-control",
   "bin": {
@@ -25,11 +25,19 @@
   "homepage": "https://github.com/binder-project/binder-control#readme",
   "dependencies": {
     "async": "^1.5.2",
+    "binder-build": "^1.0.1",
+    "binder-db": "^1.0.0",
+    "binder-deploy-kubernetes": "^1.0.1",
+    "binder-logging": "^1.0.0",
+    "binder-utils": "^1.0.0",
+    "binder-web": "^1.0.1",
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "cuid": "^1.3.8",
     "js-yaml": "^3.5.2",
     "lodash": "^3.10.1",
     "pm2": "^1.0.0",
+    "prompt": "^1.0.0",
     "request": "^2.67.0",
     "shelljs": "^0.5.3",
     "string-format": "^0.5.0",

@@ -6,6 +6,7 @@ var path = require('path')
 var fs = require('fs')
 var program = require('commander')
 var shell = require('shelljs')
+var prompt = require('prompt')
 var format = require('string-format')
 format.extend(String.prototype)
 
@@ -25,24 +26,14 @@ program
   .command('build', 'Manager the build server')
   .command('deploy-kubernetes', 'Manage the Kubernetes deployment backend')
   .command('web', 'Manage the web server')
+  .command('start-all', 'Start all services and servers')
+  .command('stop-all', 'Stop all services and servers')
 
 program
   .command('build-images')
   .description('Build all Docker images required during the boostrapping process')
   .action(function () {
     services.buildImages()
-  })
-
-program
-  .command('start-all')
-  .description('Start the build, registry, and deploy-kubernetes servers with defaults')
-  .action(function () {
-    var key = hat()
-    var config = path.join(__dirname, '../conf/example.json')
-    shell.exec('binder-control build start --api-key {0} --config {1}'
-                .format(key, config))
-    shell.exec('binder-control deploy-kubernetes start --api-key {0} --config {1}'
-                .format(key, config))
   })
 
 program
@@ -152,13 +143,6 @@ program
     _.forEach(_.keys(backends), function (backend) {
       console.log(' - ' + backend)
     })
-  })
-
-program
-  .command('stop-all')
-  .description('Stop all Binder servers/services')
-  .action(function () {
-    shell.exec('pm2 delete all')
   })
 
 program.parse(process.argv)
