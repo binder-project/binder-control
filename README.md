@@ -8,10 +8,10 @@ using Docker Compose.
 
 ### Prerequisites
  1. _PM2_: `npm install pm2 -g`
- 2. (optional, for background services only) [_Docker_](https://docs.docker.com/linux/step_one/)
- 3. (optional, for background services only) [_Docker Compose_](https://docs.docker.com/engine/installation/linux/ubuntulinux/)
- 4. (optional, for Kubernetes service only) [_Vagrant_](https://www.vagrantup.com/downloads.html)
- 5. (optional, for Kubernetes service only) [_VirtualBox_](https://www.virtualbox.org/wiki/Downloads)
+ 2. [_Docker_](https://docs.docker.com/linux/step_one/) (optional, for background services only)
+ 3. [_Docker Compose_](https://docs.docker.com/engine/installation/linux/ubuntulinux/) (optional, for background services only) 
+ 4. [_Vagrant_](https://www.vagrantup.com/downloads.html) (optional, for Kubernetes service only)
+ 5. [_VirtualBox_](https://www.virtualbox.org/wiki/Downloads) (optional, for Kubernetes service only)
 
 ### Installation
 `binder-control` is designed to be installed globally and used from the command line.
