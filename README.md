@@ -7,7 +7,9 @@ process manager that also manages optional background services (a database, a lo
 using Docker Compose.
 
 ### Prerequisites
- 1. _PM2_: `npm install pm2 -g`
+
+Make sure to install these services before proceeding with the installation:
+ 1. [_PM2_](https://github.com/Unitech/pm2): `npm install pm2 -g`
  2. [_Docker_](https://docs.docker.com/linux/step_one/) (optional, for background services only)
  3. [_Docker Compose_](https://docs.docker.com/engine/installation/linux/ubuntulinux/) (optional, for background services only) 
  4. [_Vagrant_](https://www.vagrantup.com/downloads.html) (optional, for Kubernetes service only)
