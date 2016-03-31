@@ -26,7 +26,8 @@ If you want to use the local Kubernetes VM for testing, also install:
 
 `npm install binder-control -g`
 
-If you are running on a GCE instance, ensure that `gcloud` has the correct permissions to create new instances: `gcloud auth login`
+If you are running on a GCE instance, ensure that `gcloud` has the correct permissions to create new instances: 
+`gcloud auth login`
 
 ### Getting Started
 
