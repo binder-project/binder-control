@@ -29,6 +29,7 @@ If you want to use the local Kubernetes VM for testing, also install:
 If you are running on a GCE instance, you'll first need to download/install the `gcloud` utility:
 
 `curl https://sdk.cloud.google.com | bash`
+`gcloud components update`
 
 Then ensure that `gcloud` has the correct permissions to create new instances: 
 
