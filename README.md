@@ -6,6 +6,13 @@ it's core, it's a fairly thin wrapper around the [PM2](https://github.com/Unitec
 process manager that also manages optional background services (a database, a logging stack,...)
 using Docker Compose.
 
+### Getting Started
+
+If you've created a new GCE instance specifically for Binder, and you'd like to proceed with the [default](conf/example.conf) configuration options, then `binder-control start-all` will
+interactively launch all background services and Binder servers.
+
+To interactively stop all services/services, call `binder-control stop-all`
+
 ### Services
 `binder-control` provides built-in options for deploying the end-to-end system with either a local
 version of Kubernetes (using Vagrant with VirtualBox), or with a small, preconfigured Kubernetes
