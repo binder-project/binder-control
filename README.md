@@ -17,8 +17,7 @@ Make sure to install these services before proceeding with the installation:
  3. [_Docker_](https://docs.docker.com/linux/step_one/) (optional, for background services only)
  4. [_Docker Compose_](https://docs.docker.com/engine/installation/linux/ubuntulinux/) (optional, for background services only) 
  
-If you want to use the local Kubernetes VM for testing:
-
+If you want to use the local Kubernetes VM for testing, also install:
  1. [_Vagrant_](https://www.vagrantup.com/downloads.html)
  2. [_VirtualBox_](https://www.virtualbox.org/wiki/Downloads)
 
