@@ -28,11 +28,11 @@ If you would like to use your own logging infrastructure (i.e. use an Elasticsea
 higher logging throughput), check out `binder-logging` for details on how to swap out the logging
 service with your existing infrastructure.
 
-#### Kubernetes
+#### Kubernetes VM
 
-`binder-control start-service kubernetes`
+`binder-control start-service kube-vm`
 
-The `kubernetes` service, launched with the command `binder-control start-service kubernetes`,
+The `kube-vm` service, launched with the command `binder-control start-service kube-vm`,
 will spin up a virtual machine running Kubernetes, and will insert a `kubectl` binary onto your
 path that can interface with this VM. This service depends on *VirtualBox* and *Vagrant*
 (installation instructions [here](https://www.virtualbox.org/wiki/Linux_Downloads) and
@@ -42,6 +42,23 @@ separately.
 This Kubernetes VM will only be accessible on the local machine, and will not be accessible through
 the `binder-web` interface -- it should only be used for testing `binder-deploy-kubernetes` during
 development.
+
+#### Kubernetes Cluster
+
+`binder-control start-service kube-cluster`
+
+The `kube-cluster` service will prompt the user for a set of cluster configuration parameters
+(cloud provider, cluster size, etc.) before creating a Kubernetes cluster. The cluster creation 
+process will take ~5 minutes, after which the standard Kubernetes control commands can be issued
+through the [`kubectl.sh`](services/kube-cluster/kubernetes/cluster/kubectl.sh) script, which will
+be downloaded the first time `kube-cluster` is started.
+
+Stopping `kube-cluster` will permanently destroy the cluster, so make sure any important data (such
+as data stored in Kubernetes volumes) are backed up.
+
+_IMPORTANT: `kube-cluster` must be passed a desired cluster size, and creating a cluster with many nodes
+can get very **expensive**. Checkout out the [GCE pricing guide](https://cloud.google.com/compute/pricing)
+to make sure your cluster size matches your budget._
 
 ### prerequisites
  1. _PM2_: `npm install pm2 -g`
