@@ -6,6 +6,18 @@ it's core, it's a fairly thin wrapper around the [PM2](https://github.com/Unitec
 process manager that also manages optional background services (a database, a logging stack,...)
 using Docker Compose.
 
+### Prerequisites
+ 1. _PM2_: `npm install pm2 -g`
+ 2. (optional, for background services only) _Docker_: https://docs.docker.com/linux/step_one/
+ 3. (optional, for background services only) _Docker Compose_: https://docs.docker.com/engine/installation/linux/ubuntulinux/
+ 4. (optional, for Kubernetes service only) _Vagrant_: https://www.vagrantup.com/downloads.html
+ 5. (optional, for Kubernetes service only) _VirtualBox_: https://www.virtualbox.org/wiki/Downloads
+
+### Installation
+`binder-control` is designed to be installed globally and used from the command line.
+
+`npm install binder-control -g`
+
 ### Getting Started
 
 If you've created a new GCE instance specifically for Binder, and you'd like to proceed with the [default](conf/example.conf) configuration options, then `binder-control start-all` will
@@ -67,19 +79,8 @@ _IMPORTANT: `kube-cluster` must be passed a desired cluster size, and creating a
 can get very **expensive**. Checkout out the [GCE pricing guide](https://cloud.google.com/compute/pricing)
 to make sure your cluster size matches your budget._
 
-### prerequisites
- 1. _PM2_: `npm install pm2 -g`
- 2. (optional, for background services only) _Docker_: https://docs.docker.com/linux/step_one/
- 3. (optional, for background services only) _Docker Compose_: https://docs.docker.com/engine/installation/linux/ubuntulinux/
- 4. (optional, for Kubernetes service only) _Vagrant_: https://www.vagrantup.com/downloads.html
- 5. (optional, for Kubernetes service only) _VirtualBox_: https://www.virtualbox.org/wiki/Downloads
 
-### install
-`binder-control` is designed to be installed globally and used from the command line.
-
-`npm install binder-control -g`
-
-### starting
+### Start
 
 If you want to use the provided logging stack, DB infrastructure, or Kubernetes test VM, the very
 first step is to launch these services using Docker Compose:
@@ -94,7 +95,7 @@ with a single command, using default options:
 or individually, with custom configuration files
 `binder-control (build|deploy-kubernetes) start --api-key=<key> --config=/path/to/config`
 
-#### managing
+#### Manage
 
 All services and servers launched by `binder-control` are managed by the PM2 process manager.
 
@@ -105,7 +106,7 @@ information:
 To see any console output or logging information:
 `pm2 logs <process name>`
 
-#### stopping
+#### Stop
 
 To stop background services, use the `stop-service` command
 `binder-control stop-service (db|logging|kubernetes)`
