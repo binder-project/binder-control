@@ -16,9 +16,6 @@ var validateConfig = function (config) {
   if (!config) {
     return new Error('malformed configuration file: config undefined')
   }
-  if (!config.logging) {
-    return new Error('malformed configuration file: no \'logging\' section')
-  }
   return null
 }
 
@@ -33,12 +30,12 @@ var start = function (config, cb) {
     return cb(invalid)
   }
   var confToVars = {
-    'ELASTICSEARCH_PORT': 'logging.elasticsearch.port',
-    'ELASTICSEARCH_DIR': 'logging.elasticsearch.dir',
-    'KIBANA_PORT': 'logging.kibana.port',
-    'LOGSTASH_PORT': 'logging.logstash.port',
-    'LOGSTASH_CONFIG_DIR': 'logging.logstash.configDir',
-    'WEBSOCKET_PORT': 'logging.streaming.port'
+    'ELASTICSEARCH_PORT': 'elasticsearch.port',
+    'ELASTICSEARCH_DIR': 'elasticsearch.dir',
+    'KIBANA_PORT': 'kibana.port',
+    'LOGSTASH_PORT': 'logstash.port',
+    'LOGSTASH_CONFIG_DIR': 'logstash.configDir',
+    'WEBSOCKET_PORT': 'streaming.port'
   }
   _.forEach(_.keys(confToVars), function (envVar) {
     var value = _.get(config, confToVars[envVar])
@@ -71,8 +68,12 @@ var start = function (config, cb) {
   // TODO: update the elasticsearch mapping in a less hack-y way
   // log a single message so that the mappings for dynamically-generated fields are created
   var logFirstMessage = function (next) {
-    var logger = getLogger()
-    logger.error('this is a test message', { app: 'test-app' })
+    var logger = getLogger('logging-service', config.logging)
+    try {
+      logger.error('this is a test message', { app: 'test-app' })
+    } catch (err) {
+      console.error('Could not generate the test error message -- logging server not responding')
+    }
     // give the log message 2 seconds to propage through elasticsearch
     setTimeout(function () {
       return next(null)

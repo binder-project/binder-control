@@ -1,6 +1,6 @@
 binder-mongo:
   image: mongo
-  ports: 
+  ports:
     - $MONGODB_PORT:27017
   volumes:
     - $MONGODB_DIR:/data/db

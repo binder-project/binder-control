@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+var program = require('commander')
+
+require('binder-web').cli.pm2CLI(program)
+if (process.argv.length === 2) program.help()
+program.parse(process.argv)

@@ -53,14 +53,10 @@ prompt.get({
   }
 
   // next, launch all servers
-  var config = path.join(__dirname, '../conf/example.json')
-  spawn('binder-control', ['build',  'start',  '--api-key={0}'.format(key), ' --config={0}'.format(config)],
+  spawn('binder-control', ['build',  'start',  '--api-key={0}'.format(key)], { stdio: 'inherit' })
+  spawn('binder-control', ['deploy-kubernetes',  'start', '--api-key={0}'.format(key)],
         { stdio: 'inherit' })
-  spawn('binder-control', ['deploy-kubernetes',  'start',
-        '--api-key={0}'.format(key), '--config={0}'.format(config)],
-        { stdio: 'inherit' })
-  spawn('binder-control', ['web',  'start', '--api-key={0}'.format(key), '--config={0}'.format(config)],
-        { stdio: 'inherit' })
+  spawn('binder-control', ['web',  'start', '--api-key={0}'.format(key)], { stdio: 'inherit' })
   console.log('Started services/servers with API key:', key)
 })
 

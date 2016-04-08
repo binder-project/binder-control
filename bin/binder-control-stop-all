@@ -37,7 +37,7 @@ prompt.get({
 }, function (err, result) {
   var key = hat()
 
-  // first, optionally start all background services
+  // first, optionally stop all background services
   if (result['kube-cluster']) {
     shell.exec('binder-control stop-service kube-cluster')
   }
@@ -51,8 +51,7 @@ prompt.get({
     shell.exec('binder-control stop-service logging')
   }
 
-  // next, launch all servers
-  var config = path.join(__dirname, '../conf/example.json')
+  // next, stop all servers
   shell.exec('binder-control build stop')
   shell.exec('binder-control deploy-kubernetes stop')
   shell.exec('binder-control web stop')

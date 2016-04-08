@@ -1,3 +1,4 @@
+var fs = require('fs')
 var path = require('path')
 
 var _ = require('lodash')
@@ -29,8 +30,8 @@ var start = function (config, cb) {
     return cb(invalid)
   }
   var confToVars = {
-    'MONGODB_PORT': 'db.port',
-    'MONGODB_DIR': 'db.dir'
+    'MONGODB_PORT': 'port',
+    'MONGODB_DIR': 'dir'
   }
   _.forEach(_.keys(confToVars), function (envVar) {
     var value = _.get(config, confToVars[envVar])
@@ -40,13 +41,14 @@ var start = function (config, cb) {
     confToVars[envVar] = value
   })
   var dcPath = path.join(__dirname, '../../services', 'db', 'docker-compose.yml')
-  utils.startWithPM2({
+  var app = {
     name: 'binder-db-service',
     env: confToVars,
     script: shell.which('docker-compose'),
     args: ['-f', '{0}'.format(dcPath), 'up'],
     exec_interpreter: 'none'
-  }, function (err) {
+  }
+  utils.startWithPM2(app, function (err) {
     if (err) {
       console.error('error starting logging service: ' + err.msg)
     }

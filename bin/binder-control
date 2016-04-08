@@ -20,7 +20,7 @@ var parseConfig = function (path, cb) {
 }
 
 program
-  .version('0.0.1')
+  .version('1.0.1')
 
 program
   .command('build', 'Manager the build server')
@@ -30,21 +30,10 @@ program
   .command('stop-all', 'Stop all services and servers')
 
 program
-  .command('build-images')
-  .description('Build all Docker images required during the boostrapping process')
-  .action(function () {
-    services.buildImages()
-  })
-
-program
-  .command('start-service [name]')
-  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
-  .description('Start a single Binder service (db, logging, or kubernetes)')
+  .command('start-service <name>')
+  .description('Start a single Binder service (db, logging, kube-cluster, or kube-vm)')
   .action(function (name, options) {
-    console.log('name is: {0}'.format(name))
-    var configFile = options.config || path.join(__dirname, '../conf/example.json')
     async.waterfall([
-      _.partial(parseConfig, configFile),
       _.partial(services.startService, name)
     ], function (err) {
       if (err) {
@@ -57,18 +46,15 @@ program
   })
 
 program
-  .command('stop-service [name]')
-  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
-  .description('Stop a single Binder service (db, logging, or kubernetes)')
+  .command('stop-service <name>')
+  .description('Stop a single Binder service (db, logging, kube-cluster, or kube-vm)')
   .action(function (name, options) {
-    var configFile = options.config || path.join(__dirname, '../conf/example.json')
     var stopPM2 = function (next) {
       shell.exec('pm2 delete binder-{0}-service'.format(name), function (err) {
         return next(err)
       })
     }
     async.waterfall([
-      _.partial(parseConfig, configFile),
       _.partial(services.stopService, name),
       stopPM2
     ], function (err) {
@@ -83,13 +69,9 @@ program
 
 program
   .command('start-services')
-  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
   .description('Start binder-db, binder-logging, and binder-kubernetes services')
   .action(function (options) {
-    var configFile = options.config || path.join(__dirname, '../conf/example.json')
     async.waterfall([
-      services.buildImages,
-      _.partial(parseConfig, configFile),
       _.partial(services.startServices)
     ], function (err) {
       if (err) {
@@ -103,17 +85,14 @@ program
 
 program
   .command('stop-services')
-  .option('-c, --config <path>', 'set config path. defaults to ../conf/example.json')
   .description('Stop all utility services (binder-db, binder-logging and binder-kubernetes)')
   .action(function (options) {
-    var configFile = options.config || path.join(__dirname, '../conf/example.json')
     var stopPM2 = function (next) {
       shell.exec('pm2 delete all', function (err) {
         return next(err)
       })
     }
     async.waterfall([
-      _.partial(parseConfig, configFile),
       services.stopServices,
       stopPM2
     ], function (err) {
@@ -134,15 +113,15 @@ program
     shell.exec('pm2 list')
   })
 
-program
-  .command('list-backends')
-  .alias('backends')
-  .description('List all available deployment backends')
-  .action(function () {
-    console.log('Available backends:')
-    _.forEach(_.keys(backends), function (backend) {
-      console.log(' - ' + backend)
-    })
-  })
-
 program.parse(process.argv)
+
+// taken from post https://github.com/tj/commander.js/issues/432
+var cmds = _.map(program.commands, '_name')
+var subCmd = process.argv[2]
+if (!_.includes(cmds, subCmd)) {
+  program.help()
+}
+
+
+
+
