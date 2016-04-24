@@ -1,6 +1,6 @@
 {
   "name": "binder-control",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI for launching and managing binder server processes",
   "main": "bin/binder-control",
   "bin": {

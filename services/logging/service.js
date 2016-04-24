@@ -1,3 +1,4 @@
+var fs = require('fs')
 var path = require('path')
 
 var _ = require('lodash')
@@ -45,6 +46,14 @@ var start = function (cb) {
     }
     confToVars[envVar] = value
   })
+
+  // if the configDir does not exist (no existing infrastucture), set it to the service's
+  // default configuration
+  try {
+    fs.statSync(confToVars['LOGSTASH_CONFIG_DIR'])
+  } catch (err) {
+    confToVars['LOGSTASH_CONFIG_DIR'] = path.join(__dirname, 'logstash')
+  }
 
   var dcPath = path.join(__dirname, '../../services', 'logging', 'docker-compose.yml')
   var startContainers = function (next) {
