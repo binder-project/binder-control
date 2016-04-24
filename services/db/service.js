@@ -3,6 +3,7 @@ var path = require('path')
 
 var _ = require('lodash')
 var shell = require('shelljs')
+var jsonfile = require('jsonfile')
 var format = require('string-format')
 format.extend(String.prototype)
 
@@ -24,7 +25,8 @@ var validateConfig = function (config) {
  * @param {object} config - configuration options
  * @param {function} cb - cb(err)
  */
-var start = function (config, cb) {
+var start = function (cb) {
+  var config = jsonfile.readFileSync(path.join(process.env['HOME'], '.binder/db.conf'))
   var invalid = validateConfig(config)
   if (invalid) {
     return cb(invalid)

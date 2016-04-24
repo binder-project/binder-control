@@ -14,5 +14,5 @@ cp $SERVICE_DIR/data/* $SINGLE_NODE
 cd $SINGLE_NODE && vagrant up
 echo "Sleeping for 30s to allow VM to start..."
 sleep 30
-KUBECONFIG=$SINGLE_NODE/kubeconfig $KUBECTL proxy --port=$KUBE_PROXY_PORT
+KUBECONFIG=$SINGLE_NODE/kubeconfig $KUBECTL proxy --port=$API_SERVER_PORT
 

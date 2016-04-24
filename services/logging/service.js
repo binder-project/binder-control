@@ -1,6 +1,7 @@
 var path = require('path')
 
 var _ = require('lodash')
+var jsonfile = require('jsonfile')
 var async = require('async')
 var urljoin = require('url-join')
 var request = require('request')
@@ -21,10 +22,10 @@ var validateConfig = function (config) {
 
 /**
  * Start the logging service (running the ELK stack)
- * @param {object} config - configuration options
  * @param {function} cb - cb(err)
  */
-var start = function (config, cb) {
+var start = function (cb) {
+  var config = jsonfile.readFileSync(path.join(process.env['HOME'], '.binder/logging.conf'))
   var invalid = validateConfig(config)
   if (invalid) {
     return cb(invalid)

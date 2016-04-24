@@ -1,6 +1,7 @@
 var path = require('path')
 
 var _ = require('lodash')
+var jsonfile = require('jsonfile')
 var shell = require('shelljs')
 
 var utils = require('binder-utils')
@@ -18,17 +19,16 @@ var validateConfig = function (config) {
 
 /**
  * Start the Kubernetes service (running inside a VirtualBox VM)
- * @param {object} config - configuration options
  * @param {function} cb - cb(err)
  */
-var start = function (config, cb) {
+var start = function (cb) {
+  var config = jsonfile.readFileSync(path.join(process.env['HOME'], '.binder/deploy.conf'))
   var invalid = validateConfig(config)
   if (invalid) {
     return cb(invalid)
   }
   var confToVars = {
-    'API_SERVER_PORT': 'kubernetes.port',
-    'KUBE_PROXY_PORT': 'kubernetes.proxyPort'
+    'API_SERVER_PORT': 'kube.port',
   }
   _.forEach(_.keys(confToVars), function (envVar) {
     var value = _.get(config, confToVars[envVar])
@@ -53,8 +53,9 @@ var start = function (config, cb) {
 
 /**
  * Stop the Kubernetes VM
+ * @param {function} cb - cb(err)
  */
-var stop = function (config, cb) {
+var stop = function (cb) {
   var cmd = 'stop-kubernetes.sh'
   shell.env['SERVICE_DIR'] = __dirname
   shell.exec(path.join(__dirname, cmd), function (err) {
