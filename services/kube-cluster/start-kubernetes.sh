@@ -8,4 +8,3 @@ fi
 
 echo "KUBE_DIR: " $KUBE_DIR
 $KUBE_DIR/cluster/kube-up.sh
-$KUBE_DIR/cluster/kubectl.sh proxy --port=$API_SERVER_PORT &

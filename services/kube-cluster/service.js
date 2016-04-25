@@ -74,16 +74,28 @@ var start = function (cb) {
     confToVars['NUM_NODES'] = results.minions
     confToVars['KUBERNETES_PROVIDER'] = results.provider
 
-    var result = spawn(path.join(__dirname, 'start-kubernetes.sh'), {
+    var clusterResult = spawn(path.join(__dirname, 'start-kubernetes.sh'), {
       env: _.merge(process.env, confToVars),
       stdio: 'inherit',
       shell: true,
       uid: process.getuid()
     })
-    if (result.error) {
-      return cb(new Error('error starting kubernetes cluster: ' + result.error))
-    }
-    return cb(null)
+
+    utils.startWithPM2({
+      name: 'binder-kube-cluster-proxy',
+      env: confToVars,
+      script: path.join(__dirname, 'kubernetes/cluster/kubectl.sh'),
+      args: ['proxy', '--port={0}'.format(confToVars['API_SERVER_PORT'])],
+      exec_interpreter: 'none'
+    }, function (err) {
+      if (clusterResult.error) {
+        return cb(new Error('error starting kubernetes cluster: ' + result.error))
+      }
+      if (err) {
+        return cb(new Error('error starting kubernetes cluster: ' + err))
+      }
+      return cb(null)
+    })
   })
 }
 
