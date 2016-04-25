@@ -37,11 +37,6 @@ var presentPrompt = function (cb) {
     }
   }, function (err, results) {
     if (err) return cb(err)
-    // for now, only GCE is supported
-    if (results.provider !== 'gce') {
-      console.error('For now, only GCE is supported')
-      return cb(new Error('unsuppported cloud provider'))
-    }
     return cb(null, results)
   })
 }
