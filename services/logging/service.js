@@ -68,10 +68,10 @@ var start = function (cb) {
         console.error('error starting logging service: ' + err.msg)
       }
       // give the containers 1m to start up
-      console.log('Waiting for logging containers to start up...')
+      console.log('Waiting 2 minutes for logging containers to start up...')
       setTimeout(function () {
         return next(err)
-      }, 60000)
+      }, 2 * 60 * 1000)
     })
   }
 

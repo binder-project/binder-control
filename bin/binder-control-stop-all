@@ -15,39 +15,43 @@ prompt.get({
   properties: {
     'kube-cluster': {
       description: 'Would you like to stop the Kubernetes cluster?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     },
     'kube-vm': {
       description: 'Would you like to stop the Kubernetes VM (local testing only)?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'no',
     },
     'db': {
       description: 'Would you like to stop the database service?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     },
     'logging': {
       description: 'Would you like to stop the logging service?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     }
   }
 }, function (err, result) {
   var key = hat()
 
   // first, optionally stop all background services
-  if (result['kube-cluster']) {
+  if (result['kube-cluster'] === 'yes') {
     shell.exec('binder-control stop-service kube-cluster')
   }
-  if (result['kube-vm']) {
+  if (result['kube-vm'] === 'yes') {
     shell.exec('binder-control stop-service kube-vm')
   }
-  if (result.db) {
+  if (result.db === 'yes') {
     shell.exec('binder-control stop-service db')
   }
-  if (result.logging) {
+  if (result.logging === 'yes') {
     shell.exec('binder-control stop-service logging')
   }
 
@@ -55,6 +59,7 @@ prompt.get({
   shell.exec('binder-control build stop')
   shell.exec('binder-control deploy-kubernetes stop')
   shell.exec('binder-control web stop')
+
   console.log('Stopped services/servers')
 })
 

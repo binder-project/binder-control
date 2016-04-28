@@ -16,39 +16,43 @@ prompt.get({
   properties: {
     'kube-cluster': {
       description: 'Would you like to launch a Kubernetes cluster?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     },
     'kube-vm': {
       description: 'Would you like to launch a Kubernetes VM (local testing only)?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'no',
     },
     'db': {
       description: 'Would you like to launch the database service?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     },
     'logging': {
       description: 'Would you like to launch the logging service?',
-      type: 'boolean',
-      default: 'false',
+      pattern: /(yes|no)/,
+      type: 'string',
+      default: 'yes',
     }
   }
 }, function (err, result) {
   var key = hat()
 
   // first, optionally start all background services
-  if (result['kube-cluster']) {
+  if (result['kube-cluster'] === 'yes') {
     spawn('binder-control', ['start-service', 'kube-cluster'], { stdio: 'inherit' })
   }
-  if (result['kube-vm']) {
+  if (result['kube-vm'] === 'yes') {
     spawn('binder-control', ['start-service', 'kube-vm'], { stdio: 'inherit' })
   }
-  if (result.db) {
+  if (result.db === 'yes') {
     spawn('binder-control', ['start-service', 'db'], { stdio: 'inherit' })
   }
-  if (result.logging) {
+  if (result.logging === 'yes') {
     spawn('binder-control', ['start-service', 'logging'], { stdio: 'inherit' })
   }
 
@@ -57,7 +61,19 @@ prompt.get({
   spawn('binder-control', ['deploy-kubernetes',  'start', '--api-key={0}'.format(key)],
         { stdio: 'inherit' })
   spawn('binder-control', ['web',  'start', '--api-key={0}'.format(key)], { stdio: 'inherit' })
-  console.log('Started services/servers with API key:', key)
+
+  console.log('Pulling all base images...')
+  spawn('docker', ['pull', 'andrewosh/binder-base'], { stdio: 'inherit' })
+  spawn('docker', ['pull', 'andrewosh/binder-python-2.7'], { stdio: 'inherit' })
+  spawn('docker', ['pull', 'andrewosh/binder-python-3.5'], { stdio: 'inherit' })
+  spawn('docker', ['pull', 'andrewosh/binder-python-2.7-mini'], { stdio: 'inherit' })
+  spawn('docker', ['pull', 'andrewosh/binder-python-3.5-mini'], { stdio: 'inherit' })
+
+  var sleepTime = 3 * 60
+  console.log('Sleeping for {} seconds so servers/services can stabilize...'.format(sleepTime))
+  setTimeout(function () {
+    console.log('Started services/servers with API key:', key)
+  }, sleepTime * 1000)
 })
 
 
