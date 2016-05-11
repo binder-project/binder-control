@@ -102,7 +102,10 @@ var stop = function (cb) {
   var cmd = 'stop-kubernetes.sh'
   shell.env['SERVICE_DIR'] = __dirname
   shell.exec(path.join(__dirname, cmd), function (err) {
-    return cb(err)
+    if (err) return cb(err)
+    shell.exec('pm2 delete binder-kube-cluster-proxy',  function (err) {
+      return cb(err)
+    })
   })
 }
 
