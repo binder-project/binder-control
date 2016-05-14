@@ -20,7 +20,7 @@ prompt.get({
       default: 'yes',
     },
     'kube-vm': {
-      description: 'Would you like to stop the Kubernetes VM (local testing only)?',
+      description: 'Would you like to stop the local Kubernetes deployment (local testing only)?',
       pattern: /(yes|no)/,
       type: 'string',
       default: 'no',
