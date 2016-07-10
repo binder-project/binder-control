@@ -17,6 +17,7 @@ program
   .command('build')
   .command('registry')
   .command('deploy-kubernetes')
+  .command('health')
 
 program
   .command('build-images')
