@@ -26,6 +26,7 @@ program
   .command('build', 'Manager the build server')
   .command('deploy-kubernetes', 'Manage the Kubernetes deployment backend')
   .command('web', 'Manage the web server')
+  .command('health', 'Manage the health server')
   .command('start-all', 'Start all services and servers')
   .command('stop-all', 'Stop all services and servers')
 
