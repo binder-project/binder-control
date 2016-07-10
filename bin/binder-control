@@ -31,7 +31,7 @@ program
 
 program
   .command('start-service <name>')
-  .description('Start a single Binder service (db, logging, kube-cluster, or kube-vm)')
+  .description('Start a single Binder service (db, logging, kube-cluster, or kube-docker)')
   .action(function (name, options) {
     async.waterfall([
       _.partial(services.startService, name)
@@ -47,7 +47,7 @@ program
 
 program
   .command('stop-service <name>')
-  .description('Stop a single Binder service (db, logging, kube-cluster, or kube-vm)')
+  .description('Stop a single Binder service (db, logging, kube-cluster, or kube-docker)')
   .action(function (name, options) {
     var stopPM2 = function (next) {
       shell.exec('pm2 delete binder-{0}-service'.format(name), function (err) {

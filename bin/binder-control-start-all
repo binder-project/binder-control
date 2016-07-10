@@ -21,7 +21,7 @@ prompt.get({
       default: 'yes',
     },
     'kube-vm': {
-      description: 'Would you like to launch a Kubernetes VM (local testing only)?',
+      description: 'Would you like to launch Kubernetes locally with Docker? (local testing only)?',
       pattern: /(yes|no)/,
       type: 'string',
       default: 'no',
