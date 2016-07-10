@@ -61,6 +61,7 @@ prompt.get({
   spawn('binder-control', ['deploy-kubernetes',  'start', '--api-key={0}'.format(key)],
         { stdio: 'inherit' })
   spawn('binder-control', ['web',  'start', '--api-key={0}'.format(key)], { stdio: 'inherit' })
+  spawn('binder-control', ['health', 'start', '--api-key={0}'.format(key)], { stdio: 'inherit' })
 
   console.log('Pulling all base images...')
   spawn('docker', ['pull', 'andrewosh/binder-base'], { stdio: 'inherit' })

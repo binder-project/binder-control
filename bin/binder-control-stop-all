@@ -59,6 +59,7 @@ prompt.get({
   shell.exec('binder-control build stop')
   shell.exec('binder-control deploy-kubernetes stop')
   shell.exec('binder-control web stop')
+  shell.exec('binder-control health stop')
 
   console.log('Stopped services/servers')
 })

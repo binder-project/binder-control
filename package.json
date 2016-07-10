@@ -28,6 +28,7 @@
     "binder-build": "^1.0.1",
     "binder-db": "^1.0.0",
     "binder-deploy-kubernetes": "^1.0.1",
+    "binder-health-checker": "^1.0.0",
     "binder-logging": "^1.0.0",
     "binder-utils": "^1.0.0",
     "binder-web": "^1.0.1",
