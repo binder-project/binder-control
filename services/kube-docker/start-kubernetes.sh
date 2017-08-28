@@ -7,7 +7,7 @@ docker run -d \
     --net=host \
     --pid=host \
     --privileged \
-    gcr.io/google_containers/hyperkube-${ARCH}:${K8S_VERSION} \
+    gcr.io/google_containers/hyperkube-${ARCH}:v${K8S_VERSION} \
     /hyperkube kubelet \
         --containerized \
         --hostname-override=127.0.0.1 \
